@@ -2,7 +2,8 @@
 /* Dependencies */
 var mongoose = require('mongoose'), 
     Listing = require('../models/listings.server.model.js'),
-    coordinates = require('./coordinates.server.controller.js');
+    coordinates = require('./coordinates.server.controller.js'),
+    util = require('util');
     
 /*
   In this file, you should use Mongoose queries in order to retrieve/add/remove/update listings.
@@ -56,12 +57,32 @@ exports.read = function(req, res) {
 /* Update a listing - note the order in which this function is called by the router*/
 exports.update = function(req, res) {
   var listing = req.listing;
-
+  
   /* Replace the listings's properties with the new properties found in req.body */
- 
+  listing.code = req.body.code;
+  listing.name = req.body.name;
+  listing.address = req.body.address
+
+  var currentDate = new Date();
+  listing.updated_at = currentDate;
+
   /*save the coordinates (located in req.results if there is an address property) */
- 
+  if(req.results) {
+    listing.coordinates = {
+      latitude: req.results.lat, 
+      longitude: req.results.lng
+    };
+  }
   /* Save the listing */
+  listing.save(function(err) {
+    if(err) {
+      console.log(err);
+      res.status(400).send(err);
+    } else {
+      res.json(listing);
+      console.log(listing);
+    }
+  });
 
 };
 
@@ -69,13 +90,39 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   var listing = req.listing;
 
-  /* Add your code to remove the listins */
-
+  /* Add your code to remove the listing */
+  Listing.findByIdAndRemove(req.params.id, function(err){
+    if(err){
+      console.log(err);
+      res.status(400).send(err);
+    } else{
+      res.json(listing);
+      console.log(listing);
+    }
+  });
+  // listing.delete(function(err){
+  //   if(err) {
+  //     console.log(err);
+  //     res.status(400).send(err);
+  //   } else {
+  //     res.json(listing);
+  //     console.log(listing);
+  //   }
+  // });
 };
 
 /* Retreive all the directory listings, sorted alphabetically by listing code */
 exports.list = function(req, res) {
   /* Add your code */
+  Listing.find({}, function(err, listing){
+    if(err){
+      res.status(400).send(err);
+    }
+    else{
+      res.status(200);
+      res.json(listing);
+    }
+  });
 };
 
 /* 

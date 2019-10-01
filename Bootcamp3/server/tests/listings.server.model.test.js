@@ -13,6 +13,7 @@
 
 var should = require('should'), 
     mongoose = require('mongoose'), 
+    assert =  require('chai').assert;
     Listing = require('../models/listings.server.model'), 
     config = require('../config/config');
 
@@ -74,6 +75,13 @@ describe('Listing Schema Unit Tests', function() {
       }).save(function(err){
         should.exist(err);
         done();
+      })
+    });
+
+    describe('Looking up from database', function(done){
+      it('selects correct listing', function(done){
+        
+        assert.equal()
       })
     });
 
