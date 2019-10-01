@@ -61,7 +61,7 @@ exports.update = function(req, res) {
   /* Replace the listings's properties with the new properties found in req.body */
   listing.code = req.body.code;
   listing.name = req.body.name;
-  listing.address = req.body.address
+  listing.address = req.body.address;
 
   var currentDate = new Date();
   listing.updated_at = currentDate;
@@ -91,7 +91,7 @@ exports.delete = function(req, res) {
   var listing = req.listing;
 
   /* Add your code to remove the listing */
-  Listing.findByIdAndRemove(req.params.id, function(err){
+  Listing.findByIdAndRemove(listing.id, function(err){
     if(err){
       console.log(err);
       res.status(400).send(err);
