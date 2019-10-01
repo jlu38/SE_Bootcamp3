@@ -100,15 +100,6 @@ exports.delete = function(req, res) {
       console.log(listing);
     }
   });
-  // listing.delete(function(err){
-  //   if(err) {
-  //     console.log(err);
-  //     res.status(400).send(err);
-  //   } else {
-  //     res.json(listing);
-  //     console.log(listing);
-  //   }
-  // });
 };
 
 /* Retreive all the directory listings, sorted alphabetically by listing code */

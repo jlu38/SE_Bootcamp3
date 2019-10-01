@@ -42,10 +42,6 @@ module.exports = function(req, res, next) {
           console.log(data.results[0].geometry);
           req.results = data.results[0].geometry;
         }
-        // else{
-        //   var coordinates = JSON.parse(response);
-        //   req.results = coordinates.results.geometry;
-        // }
         next();
     });
   } else {
